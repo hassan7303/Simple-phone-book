@@ -1,22 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 
-#define MAX_CONTACTS 100
+#define MAX_CONTACTS 100  
 
-struct contact {
+struct Contact {
     char name[50];
     char phone[20];
     char email[50];
 };
 
-// struct Contacts contactCount[MAX_CONTACTS];
+struct Contact contacts[MAX_CONTACTS]; 
 
 int contactCount = 0 ;
 
 void addContact() {
-    printf("addContact\n");
+    if (contactCount >= MAX_CONTACTS) {
+        printf("The phone book is full!\n");
+        return;
+    }
+
+    printf("contact name: ");
+    scanf(" %[^\n]s", contacts[contactCount].name);
+
+    printf("phone: ");
+    scanf(" %[^\n]s", contacts[contactCount].phone);
+
+    printf("email: ");
+    scanf(" %[^\n]s", contacts[contactCount].email);
+
+    contactCount++;
+    printf("✅ Contact successfully added!\n");
 }
 
 void listContacts() {
