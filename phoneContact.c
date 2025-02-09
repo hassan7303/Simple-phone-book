@@ -34,7 +34,15 @@ void addContact() {
 }
 
 void listContacts() {
-    printf("listContacts\n");
+    if(contactCount == 0){
+        printf("⛔ No contacts registered!\n");
+        return;
+    }
+
+    printf("\n📜 Contact list:\n");
+    for(int i = 0;i < contactCount; i++){
+        printf("%d.%s : %s -||- %s : %s -||- %s : %s \n",i + 1,"name",contacts[i].name ,"phone", contacts[i].phone ,"email", contacts[i].email);
+    }
 }
 
 void searchContact() {
