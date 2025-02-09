@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAX_CONTACTS 100
 
@@ -49,7 +50,7 @@ int main() {
             printf("5. Save and exit\n");
             printf("Your choice:");
             scanf("%d", &choice);
-
+ 
             switch(choice)
             {
                 case 1: addContact(); break;       
@@ -57,7 +58,7 @@ int main() {
                 case 3: searchContact(); break;    
                 case 4: deleteContact(); break;         
                 case 5: saveContacts(); printf("👋 Goodbye!\n"); break;   
-                default : printf("⛔ Invalid selection!\n"); break;   
+                default : printf("⛔ Invalid selection!\n"); return 1;   
             }
 
         }while(choice != 5);
