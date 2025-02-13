@@ -45,29 +45,33 @@ void listContacts() {
     }
 }
 
-void search(char searchBy[]){
+void search(int searchBy){
     char searchInput[50];
 
-    //سویچ کیس فقط با عدد کار میکنید اصلاح شود
     switch(searchBy){
-        case "name":
+        case 1:
             printf("🔍 Enter the contact name:\n");
             break;
 
-        case "phone":
+        case 2:
             printf("🔍 Enter the contact phone :\n");
             break;
 
-        case "email":
+        case 3:
             printf("🔍 Enter the contact email :\n");
             break;
     }
     
-    scanf("%d", &searchInput);
+    scanf("%s", &searchInput);
     
-    for(int i = 0;i < contactCount; i++){
-        if(contacts[i].searchBy == searchInput){
-            printf("%d.%s : %s -||- %s : %s -||- %s : %s \n",i + 1,"name",contacts[i].name ,"phone", contacts[i].phone ,"email", contacts[i].email);
+    for (int i = 0; i < contactCount; i++) {
+        if ((searchBy == 1 && strcmp(contacts[i].name, searchInput) == 0) ||
+            (searchBy == 2 && strcmp(contacts[i].phone, searchInput) == 0) ||
+            (searchBy == 3 && strcmp(contacts[i].email, searchInput) == 0)) {
+            
+            printf("✅ Found Contact:\n");
+            printf("%d. Name: %s | Phone: %s | Email: %s\n", 
+                   i + 1, contacts[i].name, contacts[i].phone, contacts[i].email);
             return;
         }
     }
@@ -76,25 +80,24 @@ void search(char searchBy[]){
 }
 
 void searchContact() {
-    if(contactCount == 0){
+    if (contactCount == 0) {
         printf("⛔ No contacts registered!\n");
         return;
     }
-    int choice;
 
-    printf("Search by ? \n Please choice ");
+    int choice;
+    printf("Search by?\n");
     printf("1. Contact name\n");
     printf("2. Contact phone\n");
     printf("3. Contact email\n");
+    printf("Please enter your choice: ");
     scanf("%d", &choice);
 
-    switch(choice){
-        case 1: search("name"); break;
-        case 2: search("phone"); break;
-        case 3: search("email"); break;
-        default: printf("⛔ Invalid selection!\n"); return 1;
+    if (choice >= 1 && choice <= 3) {
+        search(choice);
+    } else {
+        printf("⛔ Invalid selection!\n");
     }
-
 }
 
 void deleteContact() {
