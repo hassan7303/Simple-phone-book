@@ -45,47 +45,9 @@ void listContacts() {
     }
 }
 
-void search(int searchBy){
-    char searchInput[50];
-
-    switch(searchBy){
-        case 1:
-            printf("🔍 Enter the contact name:\n");
-            break;
-
-        case 2:
-            printf("🔍 Enter the contact phone :\n");
-            break;
-
-        case 3:
-            printf("🔍 Enter the contact email :\n");
-            break;
-    }
-    
-    scanf("%s", &searchInput);
-    
-    for (int i = 0; i < contactCount; i++) {
-        if ((searchBy == 1 && strcmp(contacts[i].name, searchInput) == 0) ||
-            (searchBy == 2 && strcmp(contacts[i].phone, searchInput) == 0) ||
-            (searchBy == 3 && strcmp(contacts[i].email, searchInput) == 0)) {
-            
-            printf("✅ Found Contact:\n");
-            printf("%d. Name: %s | Phone: %s | Email: %s\n", 
-                   i + 1, contacts[i].name, contacts[i].phone, contacts[i].email);
-            return;
-        }
-    }
-
-    printf("⛔ Contact not found!\n");return;
-}
-
-void searchContact() {
-    if (contactCount == 0) {
-        printf("⛔ No contacts registered!\n");
-        return;
-    }
-
+int getChoice() {
     int choice;
+
     printf("Search by?\n");
     printf("1. Contact name\n");
     printf("2. Contact phone\n");
@@ -93,25 +55,85 @@ void searchContact() {
     printf("Please enter your choice: ");
     scanf("%d", &choice);
 
-    if (choice >= 1 && choice <= 3) {
-        search(choice);
-    } else {
+    if (choice < 1 || choice > 3) {
         printf("⛔ Invalid selection!\n");
+        return -1;
     }
+
+    return choice;
 }
 
+
+int search(){
+    int choice = getChoice();
+    if (choice == -1) return -1;
+
+    char searchInput[50];
+    printf("🔍 Enter the contact %s:\n", choice == 1 ? "name" : (choice == 2 ? "phone" : "email"));
+    scanf(" %[^\n]s", searchInput);
+
+    for (int i = 0; i < contactCount; i++) {
+        if ((choice == 1 && strcmp(contacts[i].name, searchInput) == 0) ||
+            (choice == 2 && strcmp(contacts[i].phone, searchInput) == 0) ||
+            (choice == 3 && strcmp(contacts[i].email, searchInput) == 0)) {
+            
+            printf("✅ Found Contact:\n");
+            printf("%d. Name: %s | Phone: %s | Email: %s\n", i + 1, contacts[i].name, contacts[i].phone, contacts[i].email);
+            return 0; 
+        }
+    }
+
+    printf("⛔ Contact not found!\n");
+    return -1;
+}
+
+
 void deleteContact() {
-    printf("deleteContact\n");
+    if (contactCount == 0) {
+        printf("⛔ No contacts registered!\n");
+        return;
+    }
+    char deleteInput[50];
+    int choice = getChoice();
+    if (choice == -1) return; 
+
+    for (int i = 0; i < contactCount; i++) {
+        if ((choice == 1 && strcmp(contacts[i].name, deleteInput) == 0) ||
+            (choice == 2 && strcmp(contacts[i].phone, deleteInput) == 0) ||
+            (choice == 3 && strcmp(contacts[i].email, deleteInput) == 0)) {
+            
+            for (int j = i; j < contactCount - 1; j++) {
+                contacts[j] = contacts[j + 1];
+            }
+            contactCount--;
+        }
+    }
+
+    printf("✅ Contact successfully deleted!\n");
+
 }
 
 void saveContacts() {
     printf("saveContacts\n");
 }
 
+void addTestContact(const char* name, const char* phone, const char* email) {
+    if (contactCount < MAX_CONTACTS) {
+        strcpy(contacts[contactCount].name, name);
+        strcpy(contacts[contactCount].phone, phone);
+        strcpy(contacts[contactCount].email, email);
+        contactCount++;
+    }
+}
+
 void loadContacts() {}
 
 int main() {
     loadContacts();
+
+    addTestContact("Ali", "09123456789", "ali@example.com");
+    addTestContact("Reza", "09223334455", "reza@example.com");
+    
     int choice;
 
         do{
@@ -128,7 +150,7 @@ int main() {
             {
                 case 1: addContact(); break;       
                 case 2: listContacts(); break;     
-                case 3: searchContact(); break;    
+                case 3: search(); break;    
                 case 4: deleteContact(); break;         
                 case 5: saveContacts(); printf("👋 Goodbye!\n"); break;   
                 default : printf("⛔ Invalid selection!\n"); return 1;   
