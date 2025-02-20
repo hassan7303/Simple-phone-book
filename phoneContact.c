@@ -124,7 +124,18 @@ void deleteContact() {
 }
 
 void saveContacts() {
-    printf("saveContacts\n");
+    FILE *file = fopen("contacts.txt", "w");
+    if (file == NULL) {
+        printf("⛔ Error opening file!\n");
+        return;
+    }
+
+    for (int i = 0; i < contactCount; i++) {
+        fprintf(file, "%s,%s,%s\n", contacts[i].name, contacts[i].phone, contacts[i].email);
+    }
+
+    fclose(file);
+    printf("✅ Contacts saved successfully!\n");
 }
 
 void addTestContact(const char* name, const char* phone, const char* email) {
@@ -136,7 +147,20 @@ void addTestContact(const char* name, const char* phone, const char* email) {
     }
 }
 
-void loadContacts() {}
+void loadContacts() {
+    FILE *file = fopen("contacts.txt", "r");
+    if (file == NULL) {
+        printf("⛔ Error opening file!\n");
+        return;
+    }
+
+    while (fscanf(file, "%[^,],%[^,],%[^\n]\n", contacts[contactCount].name, contacts[contactCount].phone, contacts[contactCount].email) != EOF) {
+        contactCount++;
+    }
+
+    fclose(file);
+    printf("✅ Contacts loaded successfully!\n");
+}
 
 int main() {
     loadContacts();
