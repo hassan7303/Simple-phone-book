@@ -95,13 +95,18 @@ void deleteContact() {
     }
     char deleteInput[50];
     int choice = getChoice();
-    if (choice == -1) return; 
+    if (choice == -1) return;
 
+    printf("🗑 Enter the contact %s to delete:\n", choice == 1 ? "name" : (choice == 2 ? "phone" : "email"));
+    scanf(" %[^\n]s", deleteInput);
+
+    int found = 0;
     for (int i = 0; i < contactCount; i++) {
-        if ((choice == 1 && strcmp(contacts[i].name, deleteInput) == 0) ||
+        if ((choice == 1 && strcasecmp(contacts[i].name, deleteInput) == 0) ||
             (choice == 2 && strcmp(contacts[i].phone, deleteInput) == 0) ||
-            (choice == 3 && strcmp(contacts[i].email, deleteInput) == 0)) {
+            (choice == 3 && strcasecmp(contacts[i].email, deleteInput) == 0)) {
             
+            found = 1;
             for (int j = i; j < contactCount - 1; j++) {
                 contacts[j] = contacts[j + 1];
             }
@@ -109,8 +114,13 @@ void deleteContact() {
         }
     }
 
-    printf("✅ Contact successfully deleted!\n");
+    if (!found) {
+        printf("⛔ Contact not found!\n");
+        return;
+    }
 
+    printf("✅ Contact successfully deleted!\n");
+    return;
 }
 
 void saveContacts() {
