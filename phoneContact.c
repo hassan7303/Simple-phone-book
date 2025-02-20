@@ -98,7 +98,7 @@ void deleteContact() {
     if (choice == -1) return;
 
     printf("🗑 Enter the contact %s to delete:\n", choice == 1 ? "name" : (choice == 2 ? "phone" : "email"));
-    scanf(" %[^\n]s", deleteInput);
+    scanf(" %[^\n]", deleteInput);
 
     int found = 0;
     for (int i = 0; i < contactCount; i++) {
