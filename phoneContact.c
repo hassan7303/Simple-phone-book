@@ -64,27 +64,27 @@ int getChoice() {
 }
 
 
-int search(){
+void search(){
     int choice = getChoice();
     if (choice == -1) return -1;
 
     char searchInput[50];
     printf("🔍 Enter the contact %s:\n", choice == 1 ? "name" : (choice == 2 ? "phone" : "email"));
-    scanf(" %[^\n]s", searchInput);
+    scanf(" %[^\n]", searchInput);
 
     for (int i = 0; i < contactCount; i++) {
-        if ((choice == 1 && strcmp(contacts[i].name, searchInput) == 0) ||
+        if ((choice == 1 && strcasecmp(contacts[i].name, searchInput) == 0) ||
             (choice == 2 && strcmp(contacts[i].phone, searchInput) == 0) ||
-            (choice == 3 && strcmp(contacts[i].email, searchInput) == 0)) {
+            (choice == 3 && strcasecmp(contacts[i].email, searchInput) == 0)) {
             
             printf("✅ Found Contact:\n");
             printf("%d. Name: %s | Phone: %s | Email: %s\n", i + 1, contacts[i].name, contacts[i].phone, contacts[i].email);
-            return 0; 
+            return; 
         }
     }
 
     printf("⛔ Contact not found!\n");
-    return -1;
+    return;
 }
 
 
